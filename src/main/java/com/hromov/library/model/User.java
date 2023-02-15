@@ -1,2 +1,4 @@
-package com.hromov.library.model;public class User {
+package com.hromov.library.model;
+
+public class User {
 }
