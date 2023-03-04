@@ -1,0 +1,124 @@
+.finished {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    color: darksalmon;
+}
+
+.br-color {
+    border: 1.5px solid darkgray;
+}
+.bg-table-col1 {
+    background: lavender;
+}
+.bg-table-col2 {
+    background: lemonchiffon;
+}
+.bg-jade {
+    --bs-bg-opacity: 1;
+    background-color: mediumseagreen !important;
+}
+.mtext {
+    margin-top: -0.15rem !important;
+}
+.mtext2 {
+    margin-top: -0.65rem !important;
+}
+.me-none {
+    margin-bottom: -10px;
+}
+.sm-circle {
+    height: 48px;
+    width: 48px;
+    background: mediumseagreen;
+    border-radius: 100%;
+}
+.nav-link.active {
+    font-weight: 500 !important;
+    opacity: 100% !important;
+    color: white !important;
+}
+.navbar-nav > .active > a{
+    font-weight: 500 !important;
+    opacity: 100% !important;
+    color: white !important;
+}
+.nav-link:active {
+    font-weight: 500 !important;
+    opacity: 100% !important;
+    color: white !important;
+}
+.nav-item > a:hover {
+    color: white;
+}
+.parent{
+    overflow: hidden;
+}
+.child{
+    float: left;
+
+}
+.box-divider {
+    width: 500px;
+    height: 1px;
+    background-color: lightgray;
+    border: 0;
+    padding-left: 1500px;
+    padding-right: 1500px;
+    margin-left: -1500px;
+    margin-right: -1500px;
+}
+.search-box {
+    min-height: fit-content;
+    max-width: fit-content;
+    border-radius: 0 0 25px 25px;
+    padding: 5px 17px 0 17px;
+    background-color: mediumseagreen !important;
+}
+.bd-search {
+    width: 75%;
+}
+
+.auth-box {
+    min-height: fit-content;
+    max-width: fit-content;
+    border: 1.5px solid lightgray;
+    border-radius: 25px;
+    margin-top: 150px;
+    padding: 15px 25px;
+    box-shadow: 3px 2px 5px lightgray;
+}
+
+.item-box {
+    border: 1.5px solid lightgray;
+    margin-top: 15px;
+    padding: 15px 25px;
+    box-shadow: 3px 2px 5px lightgray;
+}
+a.nav-link{
+    color: white;
+    opacity: 75%;
+}
+a.nav-link:hover {
+    color:white;
+    opacity: 100%;
+}
+.btn-jade{
+    color: mediumseagreen;
+    border-color: mediumseagreen;
+}
+.btn-jade:hover {
+    background: mediumseagreen;
+    color: white;
+}
+.btn-jade-reversed{
+    color: white;
+    background: mediumseagreen;
+    border-color: mediumseagreen;
+}
+.btn-jade-reversed:hover {
+    background: white;
+    color: mediumseagreen;
+}

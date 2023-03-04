@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<header class="navbar navbar-expand flex-fill bg-jade sticky-top">
+
+    <div id="headerDiv" class="collapse navbar-collapse">
+        <ul class="navbar-nav flex-row me-auto">
+            <li class="nav-item my-auto">
+                <a class="navbar-brand ms-3" href="/">
+                    <img alt="home" height="35px" src="" th:src="@{/images/logo.png}"
+                         width="35px"/>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/cruises">
+                    Find Cruise
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/cruises/add_cruise">
+                    Add Cruise
+                </a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav me-3">
+            <li class="nav-item">
+                <a class="nav-link" href="/sign_in">
+                    Sign In
+                </a>
+            </li>
+            <li class="nav-item py-1 col-12 col-lg-auto">
+                <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
+                <hr class="d-lg-none text-white-50">
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/sign_up">
+                    Sign Up
+                </a>
+            </li>
+        </ul>
+    </div>
+
+
+</header>
+<script>
+    document.querySelectorAll("button.lang").forEach(e => {
+        e.addEventListener(
+            'click',
+            function () {
+                let url = new URL(document.location.href);
+                url.searchParams.set("lang", e.value);
+                document.location.href = url.toString();
+            },
+            false
+        );
+    });
+</script>

@@ -1,1 +1,22 @@
-enable-rest-security: false
+enable-rest-security: true
+
+server:
+  port: 8081
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        connection:
+          driver_class: org.postgresql.Driver
+  datasource:
+    username: MarkedOne
+    password: GuysIcaughtAnOlive
+    url: jdbc:postgresql://localhost:5432/library
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+
+
