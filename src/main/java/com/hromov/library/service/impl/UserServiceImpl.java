@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SecurityToken login(User user) {
-        Optional<User> existingUser = userRepository.findById(user.getId());
+        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
         if (existingUser.isPresent() &&
             !passwordEncoder.matches(user.getPassword(),
                     existingUser.get().getPassword())) {
