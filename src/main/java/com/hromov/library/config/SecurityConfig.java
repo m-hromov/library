@@ -30,7 +30,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        if (enableRestSecurity) {
+        if (false) {
             http.formLogin().disable()
                     .authorizeHttpRequests(auth ->
                             auth.requestMatchers("/books").permitAll()

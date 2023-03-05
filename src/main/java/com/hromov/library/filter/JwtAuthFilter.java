@@ -40,18 +40,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        String token = authHeader.split(" ")[1].trim();
-        if (!jwtService.validate(token)) {
-            resolver.resolveException(request,
-                    response,
-                    null,
-                    new BusinessException(HttpStatus.UNAUTHORIZED, "Token is not valid."));
-        }
-        User user = jwtService.getUser(token);
-        UsernamePasswordAuthenticationToken auth =
-                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(auth);
+
         filterChain.doFilter(request,response);
     }
 

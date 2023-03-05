@@ -49,7 +49,7 @@ public class BookController {
         return bookService.getBookByName(name);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+
     @GetMapping(DOWNLOAD_BOOKS)
     public void downloadBooks(HttpServletResponse response) {
         fileExportService.exportBooks(response);
