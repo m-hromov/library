@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Slf4j
 @Component
 public class AspectLoggingAdvice {
-    @Pointcut("execution(public * com.hromov.library.service.*.*(..))")
+    @Pointcut("within(com.hromov.library.service..*)")
     private void allInServiceImpl() {
     }
 
