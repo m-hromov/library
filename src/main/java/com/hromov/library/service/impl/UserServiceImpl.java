@@ -29,7 +29,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> {throw new NotFoundException("User was not found.");});
+                .orElseThrow(() -> {
+                    throw new NotFoundException("User was not found.");
+                });
     }
 
     @Override
@@ -42,7 +44,10 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAuthorities(Set.of(Authority.builder().authority("USER").build()));
-        return jwtService.getSecurityToken(existingUser.orElse(userRepository.save(user)));
+        return jwtService.getSecurityToken(
+                existingUser.or(() -> Optional.of(userRepository.save(user)))
+                        .get()
+        );
     }
 
 
