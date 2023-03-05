@@ -2,8 +2,10 @@ package com.hromov.library.controller;
 
 import com.hromov.library.dto.UserDto;
 import com.hromov.library.model.User;
+import com.hromov.library.model.auth.SecurityToken;
 import com.hromov.library.service.UserService;
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +18,10 @@ import static com.hromov.library.controller.AuthenticationController.AUTHENTICAT
 @RestController
 @RequestMapping(AUTHENTICATION_BASE)
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class AuthenticationController {
     public static final String AUTHENTICATION_BASE = "auth";
-    public static final String REGISTER = "register";
-    public static final String LOGOUT = "logout";
+    public static final String LOGIN = "login";
 
     private final UserService userService;
 
@@ -28,9 +30,8 @@ public class AuthenticationController {
         return new ModelAndView("signUp");
     }
 
-    @Hidden
-    @PostMapping(REGISTER)
-    public void register(UserDto userLoginRequest) {
+    @PostMapping(LOGIN)
+    public SecurityToken login(UserDto userLoginRequest) {
         User user = User.builder()
                 .username(userLoginRequest.getUsername())
                 .password(userLoginRequest.getPassword())
@@ -39,11 +40,6 @@ public class AuthenticationController {
                 .enabled(true)
                 .accountNonLocked(true)
                 .build();
-        userService.register(user);
-    }
-
-    @PostMapping(LOGOUT)
-    public void fakeLogout() {
-        throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
+        return userService.login(user);
     }
 }

@@ -1,6 +1,6 @@
 package com.hromov.library.config;
 
-import com.hromov.library.controller.AuthenticationController;
+import com.hromov.library.filter.JwtAuthFilter;
 import com.hromov.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,39 +14,44 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import static com.hromov.library.controller.AuthenticationController.AUTHENTICATION_BASE;
-import static com.hromov.library.controller.AuthenticationController.LOGOUT;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final AuthenticationEntryPoint authEntryPoint;
+    private final JwtAuthFilter jwtAuthFilter;
     @Value("${enable-rest-security:true}")
     private boolean enableRestSecurity;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         if (enableRestSecurity) {
-            http.authorizeHttpRequests(auth ->
+            http.formLogin().disable()
+                    .authorizeHttpRequests(auth ->
                             auth.requestMatchers("/books").permitAll()
                                     .requestMatchers("/auth").permitAll()
-                                    .requestMatchers("/auth/logout").permitAll()
                                     .requestMatchers("/static/css/style.css").permitAll()
-                                    .requestMatchers("/auth/register").permitAll()
+                                    .requestMatchers("/auth/login").permitAll()
+                                    .requestMatchers("/swagger-ui**").permitAll()
+                                    .requestMatchers("/swagger-ui/**").permitAll()
+                                    .requestMatchers("/v3/**").permitAll()
                                     .requestMatchers("/books/{bookId}").permitAll()
                                     .anyRequest().authenticated()
                     )
-                    .formLogin()
-                    .defaultSuccessUrl("/swagger-ui.html")
+                    .exceptionHandling()
+                    .authenticationEntryPoint(authEntryPoint)
                     .and()
-                    .logout()
-                    .logoutUrl("/" + AUTHENTICATION_BASE + "/" + LOGOUT)
-                    .invalidateHttpSession(true)
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/sign_out", "GET"));
+                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+                    .csrf()
+                    .disable();
         } else {
             http.authorizeHttpRequests(auth ->
                             auth.anyRequest()

@@ -3,6 +3,7 @@ package com.hromov.library.service.impl;
 import com.hromov.library.exception.NotFoundException;
 import com.hromov.library.model.Authority;
 import com.hromov.library.model.User;
+import com.hromov.library.model.auth.SecurityToken;
 import com.hromov.library.repository.UserRepository;
 import com.hromov.library.service.UserService;
 import jakarta.transaction.Transactional;
@@ -20,6 +21,7 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @Override
     public User getUserById(Long id) {
@@ -28,10 +30,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(User user) {
+    public SecurityToken login(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAuthorities(Set.of(Authority.builder().authority("USER").build()));
-        return userRepository.save(user);
+        userRepository.save(user);
+        return jwtService.getSecurityToken(user);
     }
 
 

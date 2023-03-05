@@ -1,13 +1,18 @@
 package com.hromov.library.controller;
 
 import com.hromov.library.model.Book;
+import com.hromov.library.model.User;
 import com.hromov.library.service.BookService;
 import com.hromov.library.service.FileExportService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 import static com.hromov.library.controller.BookController.BOOK_BASE;
@@ -15,9 +20,10 @@ import static com.hromov.library.controller.BookController.BOOK_BASE;
 @RestController
 @RequestMapping(BOOK_BASE)
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer authentication")
 public class BookController {
     public static final String BOOK_BASE = "books";
-    public static final String FAVORITE_BOOKS = "favorites/{userId}";
+    public static final String FAVORITE_BOOKS = "favorites";
     public static final String GET_BOOK_BY_NAME = "/name";
     public static final String DOWNLOAD_BOOKS = "books.csv";
     public static final String ADD_BOOK = "new";
@@ -33,7 +39,8 @@ public class BookController {
 
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping(FAVORITE_BOOKS)
-    public List<Book> getFavoriteBooks(@PathVariable("userId") Long userId) {
+    public List<Book> getFavoriteBooks() {
+        Long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         return bookService.getFavoriteBooks(userId);
     }
 
@@ -57,7 +64,9 @@ public class BookController {
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping(ADD_BOOK_TO_FAVORITES)
     public void addBookToFavorites(@PathVariable("userId") Long userId,
-                                   @RequestParam("bookId") Long bookId) {
+                                   @RequestParam("bookId") Long bookId,
+                                   @AuthenticationPrincipal Principal principal) {
+
         bookService.addBookToFavorites(userId, bookId);
     }
 

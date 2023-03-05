@@ -19,4 +19,7 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 
+security:
+  secret: Jnk3KjBj4iHg5kLP5$7VFR9l
+
 
