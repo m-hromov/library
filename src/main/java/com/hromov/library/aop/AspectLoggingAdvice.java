@@ -22,7 +22,7 @@ public class AspectLoggingAdvice {
     private void login() {
     }
 
-    @Before("allInServiceImpl()")
+    @Before("allInServiceImpl() && !login()")
     public void logRequests(JoinPoint joinPoint) {
         log.info(String.format("Request to %s with parameters: %s",
                 joinPoint.getSignature().getName(),
