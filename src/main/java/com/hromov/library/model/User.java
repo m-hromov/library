@@ -39,7 +39,7 @@ public class User implements UserDetails {
     @ManyToMany( cascade = {CascadeType.REFRESH})
     @JoinTable(name = "book_user",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "cruise_id"))
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
     private List<Book> books;
 
     @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
