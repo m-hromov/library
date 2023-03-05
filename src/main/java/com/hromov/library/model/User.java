@@ -32,10 +32,6 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private Role role;
-
     @ManyToMany( cascade = {CascadeType.REFRESH})
     @JoinTable(name = "book_user",
             joinColumns = @JoinColumn(name = "user_id"),

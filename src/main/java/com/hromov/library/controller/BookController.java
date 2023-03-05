@@ -27,7 +27,7 @@ public class BookController {
     public static final String GET_BOOK_BY_NAME = "/name";
     public static final String DOWNLOAD_BOOKS = "books.csv";
     public static final String ADD_BOOK = "new";
-    public static final String ADD_BOOK_TO_FAVORITES = "favorites/{userId}/new";
+    public static final String ADD_BOOK_TO_FAVORITES = "favorites/new";
     public static final String REMOVE_BOOK = "remove/{bookId}";
     public final BookService bookService;
     public final FileExportService fileExportService;
@@ -63,10 +63,9 @@ public class BookController {
 
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping(ADD_BOOK_TO_FAVORITES)
-    public void addBookToFavorites(@PathVariable("userId") Long userId,
-                                   @RequestParam("bookId") Long bookId,
+    public void addBookToFavorites(@RequestParam("bookId") Long bookId,
                                    @AuthenticationPrincipal Principal principal) {
-
+        Long userId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         bookService.addBookToFavorites(userId, bookId);
     }
 

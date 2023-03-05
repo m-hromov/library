@@ -49,9 +49,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     new BusinessException(HttpStatus.UNAUTHORIZED, "Token is not valid."));
         }
         User user = jwtService.getUser(token);
-        Set<Authority> authorities = jwtService.getAuthorities(token);
         UsernamePasswordAuthenticationToken auth =
-                new UsernamePasswordAuthenticationToken(user, null, authorities);
+                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
         filterChain.doFilter(request,response);
     }

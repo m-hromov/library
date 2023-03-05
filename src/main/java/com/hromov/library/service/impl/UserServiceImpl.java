@@ -1,5 +1,6 @@
 package com.hromov.library.service.impl;
 
+import com.hromov.library.exception.BusinessException;
 import com.hromov.library.exception.NotFoundException;
 import com.hromov.library.model.Authority;
 import com.hromov.library.model.User;
@@ -9,9 +10,11 @@ import com.hromov.library.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -31,10 +34,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SecurityToken login(User user) {
+        Optional<User> existingUser = userRepository.findById(user.getId());
+        if (existingUser.isPresent() &&
+            !passwordEncoder.matches(user.getPassword(),
+                    existingUser.get().getPassword())) {
+            throw new BusinessException(HttpStatus.UNAUTHORIZED, "Wrong password");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAuthorities(Set.of(Authority.builder().authority("USER").build()));
-        userRepository.save(user);
-        return jwtService.getSecurityToken(user);
+        return jwtService.getSecurityToken(existingUser.orElse(userRepository.save(user)));
     }
 
 

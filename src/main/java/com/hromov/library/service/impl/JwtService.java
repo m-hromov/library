@@ -34,7 +34,6 @@ public class JwtService {
         String access = Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("userId", user.getId())
-                .claim("authorities", user.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(
                         Date.from(Instant.now()
@@ -45,21 +44,6 @@ public class JwtService {
         return SecurityToken.builder()
                 .accessToken(access)
                 .build();
-    }
-
-    public Set<Authority> getAuthorities(String token) {
-        return ((List < LinkedHashMap<String, Object> >) Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody()
-                .get("authorities"))
-                .stream()
-                .map(obj -> Authority.builder()
-                        .id(((Integer) obj.get("id")).longValue())
-                        .authority((String) obj.get("authority"))
-                        .build()
-                )
-                .collect(Collectors.toSet());
     }
 
     public User getUser(String token) {
